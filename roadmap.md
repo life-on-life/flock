@@ -13,7 +13,10 @@ A church leadership tool that enables a pastor to oversee discipleship groups, w
 - **Authentication:** Invite-based (pastor invites mentors, mentors invite disciples)
 - **Meeting tracking:** Attendance + experience reflection (default questions + custom mentor questions)
 - **Material distribution:** Deferred — Duolingo-inspired, future feature
-- **Web first, mobile (React Native) later**
+- **Mobile-first:** The primary experience is a React Native app for mentors and disciples. The responsive web app is a secondary experience, initially focused on pastor administration and reporting.
+- **Mobile UX:** Core workflows must work on small screens with touch-friendly controls, accessible layouts, and appropriate keyboard behavior. Handle loading, error, and empty states without requiring horizontal scrolling.
+- **Mobile session and links:** Store mobile sessions securely and support invite links that open the app or fall back to web onboarding.
+- **Offline support:** Not in initial scope unless required; core workflows assume a network connection.
 - **Portfolio-quality:** Clean architecture, modern tooling, CI/CD
 
 ---
@@ -24,16 +27,21 @@ A church leadership tool that enables a pastor to oversee discipleship groups, w
 monorepo (Turborepo + Bun)
 ├── apps/
 │   ├── api/          → Bun + Elysia (backend)
-│   └── web/          → React + Vite + TanStack Router/Query
+│   ├── mobile/       → React Native + Expo + Expo Router
+│   └── web/          → React + Vite + TanStack Router/Query (responsive admin experience)
 ├── packages/
 │   ├── db/           → Drizzle ORM + PostgreSQL schemas & migrations
-│   ├── shared/       → Shared TypeScript types and validators (Zod/TypeBox)
-│   └── ui/           → (later) Shared component library for web + React Native
+│   ├── shared/       → Platform-neutral TypeScript types, validators, and business logic (Zod/TypeBox)
+│   └── ui/           → Shared UI primitives only where they fit both web and native
 ```
 
 **API layer:** Elysia with Eden Treaty for end-to-end type safety (Elysia's native tRPC equivalent)
 
 **Auth:** Better Auth — modern, type-safe, supports invite flows
+
+**Mobile platform:** Expo for React Native development, routing, and builds. Keep platform-specific screens and components where sharing would compromise the experience.
+
+**Responsive strategy:** Build mobile workflows for phone-sized screens first. The web app supports responsive layouts, with pastor administration and reporting as its initial focus.
 
 **Data model core concept — context-scoped membership:**
 
@@ -50,16 +58,17 @@ Group ─┘
 
 ### Task 1 — Monorepo Scaffold
 
-**Objective:** Set up the Turborepo monorepo with Bun, defining workspaces for `api`, `web`, `db`, and `shared` packages.
+**Objective:** Set up the Turborepo monorepo with Bun, defining workspaces for `api`, `mobile`, `web`, `db`, and `shared` packages.
 
 **Implementation:**
 - Init Turborepo, configure Bun workspaces
+- Create the Expo mobile app with Expo Router and the responsive web app
 - Set up Biome (linter + formatter)
-- Add root `turbo.json` with `dev`, `build`, and `lint` pipelines
+- Add root `turbo.json` with `dev`, `build`, and `lint` pipelines for all apps and packages
 
-**Tests:** Verify all workspaces resolve and `turbo dev` starts both apps.
+**Tests:** Verify all workspaces resolve, `turbo dev` starts the API and web app, and the mobile app launches in a simulator or on a device.
 
-**Done when:** Running `bun dev` from root starts both the API and web app with hot reload.
+**Done when:** Running `bun dev` from root starts the API and web app with hot reload, and the mobile app can be run through Expo on a simulator or device.
 
 ---
 
@@ -105,22 +114,24 @@ Group ─┘
 
 **Tests:** Test role guards — a mentor cannot create groups; a disciple cannot see another group's data.
 
-**Done when:** From the web app, a logged-in pastor can create a group and see their groups listed.
+**Done when:** From the web app, a logged-in pastor can create a group and see their groups listed; the mobile app can show a user's groups and their role in each.
 
 ---
 
-### Task 5 — Web App Shell & Navigation
+### Task 5 — Mobile App Shell & Navigation
 
-**Objective:** Build the React web app with TanStack Router, authenticated layout, and role-aware navigation.
+**Objective:** Build the authenticated React Native app shell with role-aware navigation designed for phone-sized screens.
 
 **Implementation:**
-- Login/signup pages and protected routes
-- Dashboard that adapts based on the user's roles across groups
-- Example: "You are a mentor in Group A and a disciple in Group B"
+- Login/invite onboarding screens and protected routes
+- Mobile navigation and a dashboard that adapts based on the user's roles across groups
+- Clear group-context switching that makes the active group and role visible
+- Configure invite deep links to open the app, with a web fallback
+- Use secure platform storage for mobile sessions
 
-**Tests:** Route guard tests — unauthenticated users are redirected to login.
+**Tests:** Test protected navigation, invite-link routing, and role-aware group switching. Verify key screens at phone-sized layouts and check keyboard, loading, error, and empty states.
 
-**Done when:** A user with two group memberships sees both contexts on their dashboard and can switch between them.
+**Done when:** A user with two group memberships sees both contexts on their phone, can identify their role in each, and can switch groups without losing their place or confusing contexts.
 
 ---
 
@@ -135,7 +146,7 @@ Group ─┘
 
 **Tests:** Only the group's mentor can create meetings; attendance is scoped to group members.
 
-**Done when:** Mentor opens their group, creates a meeting, marks each disciple as present/absent, and saves.
+**Done when:** A mentor can create a meeting and mark each disciple present or absent on a phone without horizontal scrolling, then confirm the saved attendance.
 
 ---
 
@@ -151,21 +162,22 @@ Group ─┘
 
 **Tests:** Disciples can only answer their own group's questions; mentors can read all answers in their group.
 
-**Done when:** After a meeting is recorded, a disciple logs in, answers reflection questions, and the mentor sees the filled responses.
+**Done when:** After a meeting is recorded, a disciple can complete mobile-friendly reflection questions on a phone, and the mentor can view the submitted responses.
 
 ---
 
 ### Task 8 — Pastor Dashboard
 
-**Objective:** Pastor gets a bird's-eye view of all their groups' meetings and participation.
+**Objective:** Provide a responsive web dashboard for pastors to review all their groups' meetings and participation.
 
 **Implementation:**
 - Aggregated stats endpoint (attendance rates, recent meetings, response rates per group)
-- Dashboard UI with charts (Recharts)
+- Dashboard UI with charts (Recharts), usable on both desktop and small screens
+- Keep detailed administration and reporting primarily on the web; ensure key summaries remain readable on phones
 
 **Tests:** Verify aggregation logic with seeded data.
 
-**Done when:** Pastor sees a dashboard with attendance summaries for all groups they oversee.
+**Done when:** A pastor sees attendance and response summaries for all groups they oversee in a responsive web dashboard.
 
 ---
 
@@ -177,17 +189,17 @@ Group ─┘
 - CI pipeline with Turborepo remote caching
 - API deployed to Railway or Fly.io
 - Web deployed to Vercel or Cloudflare Pages
+- Build and distribute mobile app releases through Expo Application Services (EAS) or an equivalent build/signing workflow
 - Environment variable management per environment
 
-**Tests:** A dummy PR triggers the full pipeline successfully.
+**Tests:** A dummy PR triggers lint, tests, and builds for the API, web, and mobile app; verify the mobile release workflow can produce signed iOS and Android builds.
 
-**Done when:** Pushing a PR shows green checks; merging to `main` auto-deploys both apps.
+**Done when:** Pushing a PR shows green checks; merging to `main` deploys the API and web app and can produce mobile release builds.
 
 ---
 
 ## Future Features
 
 - **Material distribution** — Duolingo-inspired lesson/content delivery through the app
-- **React Native mobile app** — reusing `packages/shared` and `packages/ui`
 - **Notifications** — meeting reminders, reflection nudges
 - **Pastor reporting** — exportable reports per group or period
