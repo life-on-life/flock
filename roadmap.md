@@ -61,6 +61,7 @@ Group ─┘
 **Objective:** Set up the Turborepo monorepo with Bun, defining workspaces for `api`, `mobile`, `web`, `db`, and `shared` packages.
 
 **Implementation:**
+
 - Init Turborepo, configure Bun workspaces
 - Create the Expo mobile app with Expo Router and the responsive web app
 - Set up Biome (linter + formatter)
@@ -77,6 +78,7 @@ Group ─┘
 **Objective:** Define the core data model using Drizzle ORM in the `packages/db` package.
 
 **Implementation:**
+
 - Tables: `users`, `groups`, `group_memberships` (role enum: `pastor` | `mentor` | `disciple`), `meetings`, `meeting_attendances`, `reflection_questions`, `reflection_answers`
 - Drizzle Kit for migrations
 - Docker Compose for local PostgreSQL
@@ -92,6 +94,7 @@ Group ─┘
 **Objective:** Implement Better Auth in the API with an invite-token based onboarding flow.
 
 **Implementation:**
+
 - Email/password auth with JWT sessions
 - Invite tokens stored in DB (linked to a group + role)
 - Token validation on signup
@@ -108,6 +111,7 @@ Group ─┘
 **Objective:** Build Elysia routes for creating groups and managing memberships, exposed via Eden Treaty.
 
 **Implementation:**
+
 - CRUD for groups (pastor only)
 - Endpoints to list members by group
 - Context-aware auth middleware that resolves the user's role for the current group
@@ -123,6 +127,7 @@ Group ─┘
 **Objective:** Build the authenticated React Native app shell with role-aware navigation designed for phone-sized screens.
 
 **Implementation:**
+
 - Login/invite onboarding screens and protected routes
 - Mobile navigation and a dashboard that adapts based on the user's roles across groups
 - Clear group-context switching that makes the active group and role visible
@@ -140,6 +145,7 @@ Group ─┘
 **Objective:** Mentors can create a meeting record and mark attendance for their disciples.
 
 **Implementation:**
+
 - `POST /meetings` and attendance marking endpoints
 - List meetings per group
 - Elysia routes + Eden Treaty client hooks integrated with TanStack Query
@@ -155,6 +161,7 @@ Group ─┘
 **Objective:** After a meeting, disciples fill out reflection responses. Mentors can view responses.
 
 **Implementation:**
+
 - Default system questions seeded in DB
 - Mentors can add custom questions per group
 - Disciples submit answers per meeting
@@ -171,6 +178,7 @@ Group ─┘
 **Objective:** Provide a responsive web dashboard for pastors to review all their groups' meetings and participation.
 
 **Implementation:**
+
 - Aggregated stats endpoint (attendance rates, recent meetings, response rates per group)
 - Dashboard UI with charts (Recharts), usable on both desktop and small screens
 - Keep detailed administration and reporting primarily on the web; ensure key summaries remain readable on phones
@@ -186,6 +194,7 @@ Group ─┘
 **Objective:** Add GitHub Actions for lint, test, and build on every PR; deploy to a cloud provider.
 
 **Implementation:**
+
 - CI pipeline with Turborepo remote caching
 - API deployed to Railway or Fly.io
 - Web deployed to Vercel or Cloudflare Pages
