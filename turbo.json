@@ -6,6 +6,11 @@
       "cache": false,
       "persistent": true
     },
+    "build": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
     "//#check": {},
     "//#lint": {
       "cache": false
