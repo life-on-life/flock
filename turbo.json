@@ -7,9 +7,7 @@
       "persistent": true
     },
     "build": {
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     },
     "//#check": {},
     "//#lint": {
