@@ -19,17 +19,17 @@ Flock is a church leadership tool. A pastor oversees discipleship groups, and in
 
 ## Requirements
 
-| Area | Requirement |
-| --- | --- |
-| **Hierarchy** | Church (pastor) → Discipleship Group → 1–2 Mentors + up to 3 Disciples. Group size limits are enforced by the API. |
-| **Roles** | `pastor` is a church-level role. `mentor` / `disciple` are group-level roles. One user can hold different roles in different groups. |
-| **Authentication** | Invite-only: pastor invites mentors, mentors invite disciples. Invites are tied to a group and a role, expire, and can only be used once. |
-| **Meeting tracking** | Attendance plus reflection (default questions + custom questions per mentor/group). |
-| **Privacy** | Disciples see their own answers. Mentors see the answers in their own group. Pastors see **aggregates** (attendance, response rates), not individual answer content. _(see [Open questions](#open-questions))_ |
-| **Mobile UX** | Touch-friendly, accessible, handles the keyboard properly, never scrolls horizontally, and has explicit loading, error and empty states. |
-| **Mobile session & links** | Sessions are kept in secure platform storage. Invite links open the app (`flock://` scheme / universal links), or fall back to web onboarding. |
-| **Offline** | Out of scope for the MVP. Core workflows assume a network connection. |
-| **Material distribution** | Deferred. A future Duolingo-inspired feature. |
+| Area                       | Requirement                                                                                                                                                                                                    |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Hierarchy**              | Church (pastor) → Discipleship Group → 1–2 Mentors + up to 3 Disciples. Group size limits are enforced by the API.                                                                                             |
+| **Roles**                  | `pastor` is a church-level role. `mentor` / `disciple` are group-level roles. One user can hold different roles in different groups.                                                                           |
+| **Authentication**         | Invite-only: pastor invites mentors, mentors invite disciples. Invites are tied to a group and a role, expire, and can only be used once.                                                                      |
+| **Meeting tracking**       | Attendance plus reflection (default questions + custom questions per mentor/group).                                                                                                                            |
+| **Privacy**                | Disciples see their own answers. Mentors see the answers in their own group. Pastors see **aggregates** (attendance, response rates), not individual answer content. _(see [Open questions](#open-questions))_ |
+| **Mobile UX**              | Touch-friendly, accessible, handles the keyboard properly, never scrolls horizontally, and has explicit loading, error and empty states.                                                                       |
+| **Mobile session & links** | Sessions are kept in secure platform storage. Invite links open the app (`flock://` scheme / universal links), or fall back to web onboarding.                                                                 |
+| **Offline**                | Out of scope for the MVP. Core workflows assume a network connection.                                                                                                                                          |
+| **Material distribution**  | Deferred. A future Duolingo-inspired feature.                                                                                                                                                                  |
 
 ---
 
@@ -48,16 +48,16 @@ monorepo (Turborepo + Bun workspaces)
 │   └── ui/           → Only if web & native truly share primitives (optional)   💤 later
 ```
 
-| Concern | Choice | Notes |
-| --- | --- | --- |
-| API | Elysia + Eden Treaty | Currently on **Elysia 2.0 RC**. Pin it, and move to stable once it's released. |
-| Auth | Better Auth | Server sessions. `@better-auth/expo` + `expo-secure-store` on mobile. Check whether the **organization plugin** (members, roles, invitations) can model church/pastor before building invites ourselves. |
-| DB | PostgreSQL + Drizzle Kit | Docker Compose for local development. |
-| Validation | TypeBox (Elysia native) or Zod | Pick **one** in Phase 1 and share it from `packages/shared`. |
-| Data fetching | TanStack Query + Eden Treaty | Same pattern on mobile and web. |
-| Lint/format | Biome | Single tool for the whole repo (replaces `expo lint` / ESLint). |
-| Testing | `bun test` | API integration tests run against a real Postgres (Docker). Shared domain logic gets unit tests. |
-| Mobile builds | EAS Build / EAS Submit | Internal distribution first, stores later. |
+| Concern       | Choice                         | Notes                                                                                                                                                                                                    |
+| ------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| API           | Elysia + Eden Treaty           | Currently on **Elysia 2.0 RC**. Pin it, and move to stable once it's released.                                                                                                                           |
+| Auth          | Better Auth                    | Server sessions. `@better-auth/expo` + `expo-secure-store` on mobile. Check whether the **organization plugin** (members, roles, invitations) can model church/pastor before building invites ourselves. |
+| DB            | PostgreSQL + Drizzle Kit       | Docker Compose for local development.                                                                                                                                                                    |
+| Validation    | TypeBox (Elysia native) or Zod | Pick **one** in Phase 1 and share it from `packages/shared`.                                                                                                                                             |
+| Data fetching | TanStack Query + Eden Treaty   | Same pattern on mobile and web.                                                                                                                                                                          |
+| Lint/format   | Biome                          | Single tool for the whole repo (replaces `expo lint` / ESLint).                                                                                                                                          |
+| Testing       | `bun test`                     | API integration tests run against a real Postgres (Docker). Shared domain logic gets unit tests.                                                                                                         |
+| Mobile builds | EAS Build / EAS Submit         | Internal distribution first, stores later.                                                                                                                                                               |
 
 ### Data model: group-scoped membership
 
@@ -89,15 +89,15 @@ erDiagram
 
 ## Phases at a glance
 
-| Phase | Theme | Status | Demo at the end |
-| --- | --- | --- | --- |
-| 0 | Foundation & tooling | 🟡 ~70% | `bun dev` runs API + Expo; CI is green on each PR |
-| 1 | Data layer & shared domain | ⚪ Not started | Migrations + seed; data browsable in Drizzle Studio |
-| 2 | Auth & invites | ⚪ Not started | Open an invite link on a phone → account created → added to group |
-| 3 | Groups & mobile shell | ⚪ Not started | User with 2 memberships switches group context on mobile |
-| 4 | Meetings & reflections (core loop) | ⚪ Not started | Mentor logs meeting → disciple reflects → mentor reviews |
-| 5 | Pastor web dashboard | ⚪ Not started | Pastor sees all groups' health in a responsive dashboard |
-| 6 | Release & operations | ⚪ Not started | Merge to `main` deploys API + web; EAS produces installable builds |
+| Phase | Theme                              | Status         | Demo at the end                                                    |
+| ----- | ---------------------------------- | -------------- | ------------------------------------------------------------------ |
+| 0     | Foundation & tooling               | 🟡 ~70%        | `bun dev` runs API + Expo; CI is green on each PR                  |
+| 1     | Data layer & shared domain         | ⚪ Not started | Migrations + seed; data browsable in Drizzle Studio                |
+| 2     | Auth & invites                     | ⚪ Not started | Open an invite link on a phone → account created → added to group  |
+| 3     | Groups & mobile shell              | ⚪ Not started | User with 2 memberships switches group context on mobile           |
+| 4     | Meetings & reflections (core loop) | ⚪ Not started | Mentor logs meeting → disciple reflects → mentor reviews           |
+| 5     | Pastor web dashboard               | ⚪ Not started | Pastor sees all groups' health in a responsive dashboard           |
+| 6     | Release & operations               | ⚪ Not started | Merge to `main` deploys API + web; EAS produces installable builds |
 
 ```mermaid
 flowchart LR
@@ -267,14 +267,14 @@ flowchart LR
 
 ## Open questions
 
-| # | Question | Why it matters |
-| --- | --- | --- |
-| 1 | Should pastors be able to read individual reflection answers, or only aggregates? | Trust and privacy; shapes the permission model |
-| 2 | Better Auth organization plugin vs. our own `church_members` + `invites` tables? | Less custom code vs. full control over the group-scoped model |
-| 3 | TypeBox or Zod for shared validation? | TypeBox is native to Elysia; Zod is more familiar on clients |
-| 4 | Can a group exist with zero mentors (e.g. while waiting for an invite to be accepted)? | Affects the size-limit rules and onboarding order |
-| 5 | Should Flock support multiple churches from day one, or one church per deployment? | Changes the schema and tenancy isolation |
-| 6 | What happens when a mentor leaves (reassign group, archive, keep history)? | Data lifecycle and pastor admin features |
+| #   | Question                                                                               | Why it matters                                                |
+| --- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| 1   | Should pastors be able to read individual reflection answers, or only aggregates?      | Trust and privacy; shapes the permission model                |
+| 2   | Better Auth organization plugin vs. our own `church_members` + `invites` tables?       | Less custom code vs. full control over the group-scoped model |
+| 3   | TypeBox or Zod for shared validation?                                                  | TypeBox is native to Elysia; Zod is more familiar on clients  |
+| 4   | Can a group exist with zero mentors (e.g. while waiting for an invite to be accepted)? | Affects the size-limit rules and onboarding order             |
+| 5   | Should Flock support multiple churches from day one, or one church per deployment?     | Changes the schema and tenancy isolation                      |
+| 6   | What happens when a mentor leaves (reassign group, archive, keep history)?             | Data lifecycle and pastor admin features                      |
 
 ---
 
