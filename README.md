@@ -28,11 +28,11 @@ flowchart LR
 
 ## Who it's for
 
-| Role | What they get |
-| --- | --- |
-| **Pastor** | A view of all their groups: which ones are meeting, attendance trends, and reflection response rates. Invites mentors and creates groups. |
-| **Mentor** | A mobile app to record meetings, mark attendance in a few taps, add their own reflection questions, and read how each disciple is doing. Invites disciples. |
-| **Disciple** | A simple app showing their group(s), upcoming meetings and short reflection prompts after each meeting. |
+| Role         | What they get                                                                                                                                               |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Pastor**   | A view of all their groups: which ones are meeting, attendance trends, and reflection response rates. Invites mentors and creates groups.                   |
+| **Mentor**   | A mobile app to record meetings, mark attendance in a few taps, add their own reflection questions, and read how each disciple is doing. Invites disciples. |
+| **Disciple** | A simple app showing their group(s), upcoming meetings and short reflection prompts after each meeting.                                                     |
 
 ### Roles depend on the group
 
@@ -73,16 +73,16 @@ See the full plan in [ROADMAP.md](./ROADMAP.md) and where things currently stand
 
 Flock is a TypeScript monorepo, type-safe from the database all the way to the phone.
 
-| Layer | Tech |
-| --- | --- |
-| Monorepo | [Turborepo](https://turborepo.com) + [Bun](https://bun.sh) workspaces |
-| Mobile app | [Expo](https://expo.dev) + React Native + Expo Router (typed routes, React Compiler) |
-| API | [Elysia](https://elysiajs.com) on Bun, with [Eden Treaty](https://elysiajs.com/eden/overview) for type-safe clients |
-| Web (planned) | React + Vite + TanStack Router/Query, for pastor admin and reporting |
-| Database (planned) | PostgreSQL + [Drizzle ORM](https://orm.drizzle.team) |
-| Auth (planned) | [Better Auth](https://better-auth.com) with invite tokens and secure session storage on mobile |
-| Validation (planned) | Shared schemas in `packages/shared` |
-| Tooling | [Biome](https://biomejs.dev) for linting and formatting |
+| Layer                | Tech                                                                                                                |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Monorepo             | [Turborepo](https://turborepo.com) + [Bun](https://bun.sh) workspaces                                               |
+| Mobile app           | [Expo](https://expo.dev) + React Native + Expo Router (typed routes, React Compiler)                                |
+| API                  | [Elysia](https://elysiajs.com) on Bun, with [Eden Treaty](https://elysiajs.com/eden/overview) for type-safe clients |
+| Web (planned)        | React + Vite + TanStack Router/Query, for pastor admin and reporting                                                |
+| Database (planned)   | PostgreSQL + [Drizzle ORM](https://orm.drizzle.team)                                                                |
+| Auth (planned)       | [Better Auth](https://better-auth.com) with invite tokens and secure session storage on mobile                      |
+| Validation (planned) | Shared schemas in `packages/shared`                                                                                 |
+| Tooling              | [Biome](https://biomejs.dev) for linting and formatting                                                             |
 
 ### Repository layout
 
